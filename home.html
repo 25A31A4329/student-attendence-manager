@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Attendance</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Student Attendance Dashboard</h2>
+
+<div class="att-block">
+
+<p><b>Name:</b> <span id="name"></span></p>
+<p><b>Roll Number:</b> <span id="roll"></span></p>
+<p><b>Branch:</b> CAI</p>
+
+<hr>
+
+<h3>Daily Attendance (7 Periods)</h3>
+
+<table border="1" width="80%" align="center" cellpadding="8" id="table">
+<tr>
+<th>Period</th>
+<th>Status</th>
+</tr>
+</table>
+
+<br>
+
+<h3>
+Monthly Attendance % :
+<span id="month"></span>
+</h3>
+
+<h3>
+Total Attendance % :
+<span id="total"></span>
+</h3>
+
+<h3 id="warning"></h3>
+
+</div>
+
+<script>
+// Student Full Data
+const students = {
+ "25A31A4312": {
+   name:"J.Lalitha",
+   month:85, total:88,
+   periods:["P","P","A","P","P","P","P"]
+ },
+ "25A31A4329": {
+   name:"R.Sirisha",
+   month:70, total:69,
+   periods:["P","A","P","P","P","A","P"]
+ },
+ "25A31A4319": {
+   name:"M.Harini",
+   month:92, total:91,
+   periods:["P","P","P","P","P","P","P"]
+ },
+ "25A31A4314":{
+   name:"K.Vyshanavi",
+   month:63, total:60,
+   periods:["A","P","P","P","A","P","P"]
+ },
+ "25A31A4306":{
+   name:"E.Manasa",
+   month:58, total:55,
+   periods:["A","P","A","P","P","A","P"]
+ },
+ "25A31A4324":{
+   name:"P.Shalni",
+   month:75, total:77,
+   periods:["P","P","P","A","P","P","P"]
+ },
+ "25A31A4322":{
+   name:"N.Krishnaveni",
+   month:50, total:52,
+   periods:["A","P","A","P","A","P","A"]
+ },
+ "25A31A4310":{
+   name:"G.Jaya Sree",
+   month:67, total:65,
+   periods:["P","A","P","P","P","P","A"]
+ },
+ "25A31A4304":{
+   name:"B.Maghana",
+   month:82, total:84,
+   periods:["P","P","P","P","A","P","P"]
+ },
+ "25A31A4309":{
+   name:"G.Pavani",
+   month:45, total:48,
+   periods:["A","A","P","P","A","P","A"]
+ },
+ "25A31A4337":{
+   name:"A.Manikanta",
+   month:55, total:70,
+   periods:["A","P","P","P","A","P","A"]
+ },
+ "25A31A4340":{
+   name:"P.Ganesh manideepak",
+   month:78, total:80,
+   periods:["A","A","P","P","P","P","P"]
+ }
+};
+
+// Get Roll from URL
+const roll = new URLSearchParams(window.location.search).get("roll");
+document.getElementById("roll").innerText = roll;
+
+if(students[roll]){
+ let s = students[roll];
+
+ document.getElementById("name").innerText = s.name;
+
+ let month = document.getElementById("month");
+ let total = document.getElementById("total");
+ let warning = document.getElementById("warning");
+
+ month.innerText = s.month + "%";
+ total.innerText = s.total + "%";
+
+ function setColor(span,value){
+  if(value >= 75) span.style.color="green";
+  else if(value >= 60) span.style.color="orange";
+  else span.style.color="red";
+ }
+
+ setColor(month,s.month);
+ setColor(total,s.total);
+
+ if(s.total >= 75){
+  warning.style.color="green";
+  warning.innerText="Good! Attendance is satisfactory 👍";
+ }
+ else if(s.total >= 60){
+  warning.style.color="orange";
+  warning.innerText="Need to attend regularly ⚠️";
+ }
+ else{
+  warning.style.color="red";
+  warning.innerText="Must attend college regularly 🚨";
+ }
+
+ // Fill Period Table
+ let table = document.getElementById("table");
+
+ for(let i=0;i<7;i++){
+   let row = document.createElement("tr");
+   row.innerHTML = `<td>Period ${i+1}</td>
+                    <td>${s.periods[i]=="P"?"Present":"Absent"}</td>`;
+   table.appendChild(row);
+ }
+
+}
+else{
+ document.getElementById("name").innerText="Student Not Found";
+ document.getElementById("warning").innerText="Invalid Roll Number";
+}
+</script>
+
+</body>
+</html>

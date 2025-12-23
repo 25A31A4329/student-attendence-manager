@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Login</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="login-box">
+
+<img src="Pragati_Engineering_College_logo.JPEG" class="logo">
+
+<h2>Pragati Engineering College</h2>
+<h3>Student Attendance Manager</h3>
+
+<input id="roll" type="text" placeholder="Enter Roll Number">
+
+<div class="password-box">
+  <input type="password" id="pass" placeholder="Enter Password">
+  <span onclick="togglePassword()">👁️</span>
+</div>
+
+<button class="btn" onclick="login()">Login</button>
+
+<p id="error" style="color:red;"></p>
+
+</div>
+
+<script>
+function togglePassword(){
+ let p = document.getElementById("pass");
+ p.type = (p.type === "password") ? "text" : "password";
+}
+
+// Valid Roll Numbers
+const validRolls = [
+ "25A31A4312","25A31A4329","25A31A4319","25A31A4314",
+ "25A31A4306","25A31A4324","25A31A4322",
+ "25A31A4310","25A31A4304","25A31A4309","25A31A4337","25A31A4340"
+];
+
+function login(){
+
+ let roll = document.getElementById("roll").value.trim();
+ let pass = document.getElementById("pass").value.trim();
+ let error = document.getElementById("error");
+
+ // check empty
+ if(roll === "" || pass === ""){
+   error.innerText = "Please enter Roll Number and Password";
+   return;
+ }
+
+ // check roll exists
+ if(!validRolls.includes(roll)){
+   error.innerText = "Invalid Roll Number";
+   return;
+ }
+
+ // Password must be 8 chars and 1 special symbol
+ let specialPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/;
+
+ if(pass.length < 8){
+   error.innerText = "Password must be at least 8 characters";
+   return;
+ }
+
+ if(!specialPattern.test(pass)){
+   error.innerText = "Password must contain at least one special symbol";
+   return;
+ }
+
+ // If everything correct → go to home
+ window.location.href = "home.html?roll=" + roll;
+}
+</script>
+
+
+</body>
+</html>
